@@ -1,0 +1,17 @@
+export async function main(ns) {
+  const target = ns.getHostname()
+  const SecThresh = ns.getServerMinSecurityLevel(target) + 10;
+  const CashThresh = ns.getServerMaxMoney(target) * 0.5;
+  const Sec = ns.getServerSecurityLevel(target);
+  const Cash = ns.getServerMoneyAvailable(target);
+  ns.nuke(target)
+  while (true) {
+    if (Sec >= SecThresh) {
+      await ns.weaken(target)
+    }
+    if (Cash <= CashThresh) {
+      await ns.grow(target)
+    }
+    await ns.hack(target)
+  }
+}
